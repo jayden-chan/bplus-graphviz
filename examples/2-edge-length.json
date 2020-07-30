@@ -1,0 +1,28 @@
+{
+  "q": 3,
+  "root": {
+    "items": [18],
+    "children": [
+      {
+        "items": [5, 13],
+        "children": [
+          {
+            "items": [2, 3]
+          }
+        ]
+      },
+      {
+        "items": [25],
+        "children": [
+          {
+            "items": [18, 23],
+            "minlen": 10
+          },
+          {
+            "items": [25, 29]
+          }
+        ]
+      }
+    ]
+  }
+}

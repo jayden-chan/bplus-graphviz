@@ -2,7 +2,7 @@
 
 rm examples/*.png
 
-titles=("Simple" "Custom Edge Length" "Highlight Information" "Custom Cell Dimensions")
+titles=("Simple" "Custom Edge Length" "Highlight Information" "Custom Cell Dimensions", "Strings")
 files=(examples/**/*(.))
 
 csplit --quiet README.md '/## Examples/+1'

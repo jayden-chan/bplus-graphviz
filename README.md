@@ -43,5 +43,8 @@ is a leaf node)
 ### Highlight Information ([source](/examples/3-highlight.json))
 ![Highlight Information](/examples/3-highlight.png)
 
-### Custom Cell Dimensions ([source](/examples/4-width-height.json))
-![Custom Cell Dimensions](/examples/4-width-height.png)
+### Custom Cell Dimensions, ([source](/examples/4-width-height.json))
+![Custom Cell Dimensions,](/examples/4-width-height.png)
+
+### Strings ([source](/examples/5-strings.json))
+![Strings](/examples/5-strings.png)

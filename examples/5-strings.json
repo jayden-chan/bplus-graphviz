@@ -1,0 +1,22 @@
+{
+  "q": 3,
+  "cellWidth": 55,
+  "cellHeight": 45,
+  "root": {
+    "items": ["ccc", "fff", "vvv"],
+    "children": [
+      {
+        "items": ["aaa", "bbb"]
+      },
+      {
+        "items": ["ccc", "ddd", "eee"]
+      },
+      {
+        "items": ["fff", "lll"]
+      },
+      {
+        "items": ["vvv", "yyy"]
+      }
+    ]
+  }
+}

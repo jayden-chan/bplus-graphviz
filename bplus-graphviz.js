@@ -60,55 +60,66 @@ function main() {
   }
 }
 
-function recurse(node, nodeCount, leaves, q, cellWidth, cellHeight) {
-  const nodeName = `node${nodeCount}`;
+function recurse(node, numNodes, leaves, q, W, H) {
+  const nodeName = `node${numNodes}`;
+
+  const cellProps = `WIDTH="${W}" HEIGHT="${H}" FIXEDSIZE="TRUE"`;
+  const tableEntries = [
+    ...node.items,
+    ...Array(q - node.items.length).fill(null),
+  ]
+    .map((item, idx) => {
+      const cellContents = item
+        ? typeof item === "object" && item.highlight
+          ? `<FONT COLOR="red">${item.value}</FONT>`
+          : item
+        : "";
+
+      const indent = " ".repeat(10);
+      const port = 2 * idx + 1;
+      const cellPort = port + 1;
+
+      return `${indent}<TD PORT="${port}" ${cellProps}>${cellContents}</TD>
+${indent}<TD PORT="${cellPort}" BGCOLOR="lightgrey"></TD>`;
+    })
+    .join("\n")
+    .trim();
+
+  const borderColor = node.highlight ? "red" : "black";
 
   let ret = `
+    /* ${node.items} */
     ${nodeName} [shape=none, fontsize=18, margin=0, label=<
-      <TABLE BORDER="0" COLOR="${
-        node.highlight ? "red" : "black"
-      }" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+      <TABLE BORDER="0" COLOR="${borderColor}" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
         <TR>
           <TD PORT="0" BGCOLOR="lightgrey"></TD>
-${[...node.items, ...Array(q - node.items.length).fill(null)]
-  .map(
-    (item, idx) =>
-      `          <TD WIDTH="${cellWidth}" HEIGHT="${cellHeight}" FIXEDSIZE="TRUE" PORT="${
-        2 * idx + 1
-      }">${
-        item && typeof item === "object" && item.highlight
-          ? '<FONT COLOR="red">'
-          : ""
-      }${item && typeof item === "object" ? item.value : item || ""}${
-        item && typeof item === "object" && item.highlight ? "</FONT>" : ""
-      }</TD>\n          <TD PORT="${2 * idx + 2}" BGCOLOR="lightgrey"></TD>`
-  )
-  .join("\n")}
+          ${tableEntries}
         </TR>
       </TABLE>
     >];
 `;
 
   if (node.children && node.children.length > 0) {
-    const currNodeNum = nodeCount;
-    node.children.forEach((childNode, i) => {
-      const [newNode, newNodeCount] = recurse(
-        childNode,
-        ++nodeCount,
+    const currNodeNum = numNodes;
+    node.children.forEach((child, i) => {
+      const [newNode, newNumNodes] = recurse(
+        child,
+        ++numNodes,
         leaves,
         q,
-        cellWidth,
-        cellHeight
+        W,
+        H
       );
+
       ret += newNode;
-      ret += `\n    node${currNodeNum}:${i * 2} -> node${nodeCount}:${q};\n`;
-      nodeCount = newNodeCount;
+      ret += `\n    node${currNodeNum}:${i * 2} -> node${numNodes}:${q};\n`;
+      numNodes = newNumNodes;
     });
   } else {
     leaves.push([nodeName, node.minlen]);
   }
 
-  return [ret, nodeCount];
+  return [ret, numNodes];
 }
 
 main();

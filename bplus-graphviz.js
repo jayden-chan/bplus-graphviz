@@ -17,14 +17,16 @@ function genGraph(data) {
     ranksep = ${Math.round(((q / 3) * cellWidth) / 40)};
     nodesep = 0.3;
     ${recurse(root, 0, leaves, q, cellWidth, cellHeight)[0]}
+    /* Attatch leaf nodes */
     ${leaves.reduce((acc, [curr, minlen], idx, arr) => {
       if (idx !== arr.length - 1) {
         acc += `${curr}:${2 * q} -> ${arr[idx + 1][0]}:0${
           minlen ? ` [minlen=${minlen}]` : ""
-        };\n`;
+        };\n    `;
       }
       return acc;
     }, "")}
+    /* Make sure the leaf nodes are aligned vertically */
     {rank = same; ${leaves.map(([name]) => name).join("; ")}}
 }`;
 }
@@ -62,16 +64,16 @@ function recurse(node, nodeCount, leaves, q, cellWidth, cellHeight) {
   const nodeName = `node${nodeCount}`;
 
   let ret = `
-${nodeName} [shape=none, fontsize=18, margin=0, label=<
-<TABLE BORDER="0" COLOR="${
-    node.highlight ? "red" : "black"
-  }" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
-<TR>
-<TD PORT="0" BGCOLOR="lightgrey"></TD>
+    ${nodeName} [shape=none, fontsize=18, margin=0, label=<
+      <TABLE BORDER="0" COLOR="${
+        node.highlight ? "red" : "black"
+      }" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+        <TR>
+          <TD PORT="0" BGCOLOR="lightgrey"></TD>
 ${[...node.items, ...Array(q - node.items.length).fill(null)]
   .map(
     (item, idx) =>
-      `<TD WIDTH="${cellWidth}" HEIGHT="${cellHeight}" FIXEDSIZE="TRUE" PORT="${
+      `          <TD WIDTH="${cellWidth}" HEIGHT="${cellHeight}" FIXEDSIZE="TRUE" PORT="${
         2 * idx + 1
       }">${
         item && typeof item === "object" && item.highlight
@@ -79,12 +81,12 @@ ${[...node.items, ...Array(q - node.items.length).fill(null)]
           : ""
       }${item && typeof item === "object" ? item.value : item || ""}${
         item && typeof item === "object" && item.highlight ? "</FONT>" : ""
-      }</TD>\n<TD PORT="${2 * idx + 2}" BGCOLOR="lightgrey"></TD>`
+      }</TD>\n          <TD PORT="${2 * idx + 2}" BGCOLOR="lightgrey"></TD>`
   )
   .join("\n")}
-</TR>
-</TABLE>>
-];
+        </TR>
+      </TABLE>
+    >];
 `;
 
   if (node.children && node.children.length > 0) {
@@ -99,7 +101,7 @@ ${[...node.items, ...Array(q - node.items.length).fill(null)]
         cellHeight
       );
       ret += newNode;
-      ret += `node${currNodeNum}:${i * 2} -> node${nodeCount}:${q};\n`;
+      ret += `\n    node${currNodeNum}:${i * 2} -> node${nodeCount}:${q};\n`;
       nodeCount = newNodeCount;
     });
   } else {

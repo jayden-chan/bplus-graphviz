@@ -10,7 +10,7 @@ rm README.md
 rm xx01
 
 for i in {1..$#files}; do
-    node ./bplus-gviz.js ${files[i]} | dot -Tpng > ${files[i]:r}.png
+    node ./bplus-graphviz.js ${files[i]} | dot -Tpng > ${files[i]:r}.png
     echo >> xx00
     echo "### ${titles[i]} ([source](/${files[i]}))" >> xx00
     echo "![${titles[i]}](/${files[i]:r}.png)" >> xx00

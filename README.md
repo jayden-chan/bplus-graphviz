@@ -5,11 +5,11 @@ Generate GraphViz programs for B+ Trees.
 ## Usage
 Read input from a file
 ```
-node bplus-gviz.js graph.json | dot -Tpng > output.png
+node bplus-graphviz.js graph.json | dot -Tpng > output.png
 ```
 Pipe input to STDIN
 ```
-cat graph.json | node bplus-gviz.js | dot -Tpng > output.png
+cat graph.json | node bplus-graphviz.js | dot -Tpng > output.png
 ```
 
 ### Input format

@@ -16,16 +16,16 @@ function genGraph(data) {
     rankdir = TB;
     ranksep = ${Math.round(((q / 3) * cellWidth) / 40)};
     nodesep = 0.3;
-    ${recurse(root, 0, leaves, q, cellWidth, cellHeight)[0]}
+${recurse(root, 0, leaves, q, cellWidth, cellHeight)[0]}
     /* Attatch leaf nodes */
-    ${leaves.reduce((acc, [curr, minlen], idx, arr) => {
-      if (idx !== arr.length - 1) {
-        acc += `${curr}:${2 * q} -> ${arr[idx + 1][0]}:0${
-          minlen ? ` [minlen=${minlen}]` : ""
-        };\n    `;
-      }
-      return acc;
-    }, "")}
+${leaves.reduce((acc, [curr, minlen], idx, arr) => {
+  if (idx !== arr.length - 1) {
+    acc += `    ${curr}:${2 * q} -> ${arr[idx + 1][0]}:0${
+      minlen ? ` [minlen=${minlen}]` : ""
+    };\n`;
+  }
+  return acc;
+}, "")}
     /* Make sure the leaf nodes are aligned vertically */
     {rank = same; ${leaves.map(([name]) => name).join("; ")}}
 }`;
